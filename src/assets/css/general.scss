@@ -1,0 +1,153 @@
+//normalize
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+//general
+
+* {
+  font-family: 'Space Grotesk Medium', sans-serif;
+}
+
+body {
+  background: $main;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1400px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+
+@media screen and (max-width: 576px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+.title {
+  font-family: 'Space Grotesk Bold', sans-serif;
+  color: $dark;
+
+  &_l {
+    font-size: 56px;
+  }
+
+  &_m {
+    font-size: 24px;
+  }
+
+  &_s {
+    font-size: 20px;
+  }
+
+  &_xs {
+    font-size: 16px;
+  }
+
+  &_light {
+    color: $light;
+  }
+}
+
+.text {
+  font-family: 'Space Grotesk Medium', sans-serif;
+  font-size: 16px;
+  color: $dark;
+  opacity: 0.66;
+}
+
+.btn {
+  padding: 20px;
+  display: flex;
+  background: $light;
+  border: 3px solid $dark;
+  box-shadow: 0px 10px 0px $dark;
+  border-radius: 20px;
+  font-family: 'Space Grotesk Bold', sans-serif;
+  font-size: 24px;
+  text-transform: uppercase;
+
+  &:hover {
+    border-color: $dark-main;
+    box-shadow: 0px 10px 0px $dark-main;
+  }
+
+  &_center {
+    justify-content: center;
+  }
+
+  &_icon {
+    padding: 13px 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_color-first {
+    background: $player-one;
+  }
+
+  &_color-second {
+    background: $player-two;
+  }
+}
+
+.btn-small {
+  display: inline-flex;
+  justify-content: center;
+  padding: 10px 20px;
+  color: $light;
+  text-transform: uppercase;
+  background: $dark-main;
+  border-radius: 20px;
+
+  &:hover {
+    background: $player-one;
+  }
+}
