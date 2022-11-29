@@ -106,6 +106,7 @@ body {
 .btn {
   padding: 20px;
   display: flex;
+  justify-content: center;
   background: $light;
   border: 3px solid $dark;
   box-shadow: 0px 10px 0px $dark;
@@ -130,6 +131,7 @@ body {
   }
 
   &_color-first {
+    color: $light;
     background: $player-one;
   }
 
@@ -146,8 +148,50 @@ body {
   text-transform: uppercase;
   background: $dark-main;
   border-radius: 20px;
+  font-family: 'Space Grotesk Bold', sans-serif;
+  font-size: 16px;
 
   &:hover {
     background: $player-one;
+  }
+}
+
+.modal-wrap {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  padding: 25px 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 0;
+  width: 480px;
+  background: $main;
+  padding: 50px 40px;
+  border: 3px solid #000000;
+  box-shadow: 0px 10px 0px #000000;
+  border-radius: 40px;
+
+  &__title {
+    margin-bottom: 44px;
+  }
+
+  &__btn {
+    width: 100%;
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

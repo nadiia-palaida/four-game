@@ -1,9 +1,24 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
+<script>
+import {mapState} from 'pinia'
+import { useMainStore } from './stores/main'
+
+export default {
+  computed: {
+    ...mapState(useMainStore, ['modal']),
+    modalComponent() {
+       /*new URL(`@/components/ModalPause`, import.meta.url).default*/
+
+      return import.meta.glob('./components/ModalPause.vue');
+    }
+  },
+
+}
 </script>
 
 <template>
   <RouterView />
+
+  <component :is="modalComponent"/>
 </template>
 
 <style scoped>
