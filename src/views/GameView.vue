@@ -81,7 +81,6 @@ export default {
       }
 
 
-
       this.game.forEach((rowItem, rowIndex) => {
         this.counter.countRowOne = 1
         this.counter.countRowTwo = 1
@@ -115,7 +114,47 @@ export default {
           }
 
           //check first diagonal
-          if (cellIndex + 1 < rowItem.length - 1 && rowIndex < this.game.length - 1) {
+          let newRowIndex = rowIndex
+          let newRowIndexTwo = rowIndex
+
+          for (let i = cellIndex; i < cellIndex + 4; i++) {
+            if (i + 1 < rowItem.length - 1 && newRowIndex < this.game.length - 1) {
+              if (cellItem === this.game[newRowIndex + 1][i + 1]) {
+                cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++
+
+
+                if (this.counter.countDiagonalOne === 4) {
+                  this.setWinner(PLAYER_ONE)
+                  setTimeout(() => {
+                    for (let j = i; j < i - 4; j--) {
+                      console.log('rowItem', rowItem)
+                      console.log('cellItem', cellItem)
+                      this.$refs[`bg-animate-${newRowIndex - 1}-${j}`][0].classList.add('is-four')
+                    }
+                  }, 1000)
+                } else if (this.counter.countDiagonalTwo === 4) {
+                  this.setWinner(PLAYER_TWO)
+                  setTimeout(() => {
+                    for (let j = i; j > i - 3; j--) {
+                      console.log('newRowIndex', newRowIndex)
+                      console.log('j', j)
+                      if(j < rowItem.length - 1 && j >= 0 && newRowIndex < this.game.length - 1) {
+                        this.$refs[`bg-animate-${newRowIndex - 1}-${j}`][0].classList.add('is-four')
+                      }
+                      newRowIndex--
+                    }
+                  }, 1000)
+                }
+              } else {
+                this.counter.countDiagonalOne = 1
+                this.counter.countDiagonalTwo = 1
+              }
+              newRowIndex++
+            }
+          }
+
+
+          /*if (cellIndex + 1 < rowItem.length - 1 && rowIndex < this.game.length - 1) {
             for (let i = cellIndex; i < cellIndex + 4; i++) {
               if (cellItem === this.game[rowIndex + 1][i + 1]) {
                 cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++
@@ -143,28 +182,28 @@ export default {
               }
             }
 
-           /* if (cellItem === this.game[rowIndex + 1][cellIndex + 1]) {
-             /!* cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++*!/
+            /!* if (cellItem === this.game[rowIndex + 1][cellIndex + 1]) {
+              /!* cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++*!/
 
-              if (this.counter.countDiagonalOne === 4) {
-                setTimeout(() => {
-                  for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
-                    this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
-                  }
-                }, 1000)
+               if (this.counter.countDiagonalOne === 4) {
+                 setTimeout(() => {
+                   for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                     this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                   }
+                 }, 1000)
 
-                this.setWinner(PLAYER_ONE)
-              } else if (this.counter.countDiagonalTwo === 4) {
-                setTimeout(() => {
-                  for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
-                    this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
-                  }
-                }, 1000)
+                 this.setWinner(PLAYER_ONE)
+               } else if (this.counter.countDiagonalTwo === 4) {
+                 setTimeout(() => {
+                   for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                     this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                   }
+                 }, 1000)
 
-                this.setWinner(PLAYER_TWO)
-              }
-            }*/
-          }
+                 this.setWinner(PLAYER_TWO)
+               }
+             }*!/
+          }*/
 
           //check second diagonal
           if (cellIndex - 1 >= 0 && rowIndex + 1 < rowItem.length - 1) {
@@ -183,15 +222,15 @@ export default {
               this.setWinner(PLAYER_TWO)
             }
 
-          /*  if (cellItem === this.game[rowIndex + 1][cellIndex - 1]) {
-              cellItem === PLAYER_ONE ? this.counter.countDiagonalRevertOne++ : this.counter.countDiagonalRevertTwo++
+            /*  if (cellItem === this.game[rowIndex + 1][cellIndex - 1]) {
+                cellItem === PLAYER_ONE ? this.counter.countDiagonalRevertOne++ : this.counter.countDiagonalRevertTwo++
 
-              if (this.counter.countDiagonalRevertOne === 4) {
-                this.setWinner(PLAYER_ONE)
-              } else if (this.counter.countDiagonalRevertTwo === 4) {
-                this.setWinner(PLAYER_TWO)
-              }
-            }*/
+                if (this.counter.countDiagonalRevertOne === 4) {
+                  this.setWinner(PLAYER_ONE)
+                } else if (this.counter.countDiagonalRevertTwo === 4) {
+                  this.setWinner(PLAYER_TWO)
+                }
+              }*/
           }
         })
       })
