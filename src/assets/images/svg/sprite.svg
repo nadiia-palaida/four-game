@@ -13,6 +13,7 @@
         <path d="M26.375 14.6666V19.6536H23.375V14.6666H26.375Z" fill="black"/>
         <path d="M34.7083 14.6666V19.6536H31.7083V14.6666H34.7083Z" fill="black"/>
     </symbol>
+
     <symbol viewBox="0 0 54 59" id="player-one">
         <circle cx="27" cy="27" r="27" fill="black"/>
         <circle cx="27" cy="32" r="27" fill="black"/>
@@ -31,6 +32,10 @@
               fill="black"/>
         <path d="M23.25 17V22.9844H26.25V17H23.25Z" fill="black"/>
         <path d="M13.25 17V22.9844H16.25V17H13.25Z" fill="black"/>
+    </symbol>
+
+    <symbol viewBox="0 0 34 34" id="white-circle">
+        <circle cx="17" cy="17" r="14" stroke="white" stroke-width="6" fill="none"/>
     </symbol>
 
     <symbol viewBox="0 0 38 36" id="pointer">

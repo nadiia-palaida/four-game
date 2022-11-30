@@ -80,10 +80,7 @@ export default {
         revertArray[i] = new Array(ROWS);
       }
 
-      this.counter.countDiagonalOne = 1
-      this.counter.countDiagonalTwo = 1
-      this.counter.countDiagonalRevertOne = 1
-      this.counter.countDiagonalRevertTwo = 1
+
 
       this.game.forEach((rowItem, rowIndex) => {
         this.counter.countRowOne = 1
@@ -99,37 +96,103 @@ export default {
             cellItem === PLAYER_ONE ? this.counter.countRowOne++ : this.counter.countRowTwo++
 
             if (this.counter.countRowOne === 4) {
+              setTimeout(() => {
+                for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                  this.$refs[`bg-animate-${rowIndex}-${i}`][0].classList.add('is-four')
+                }
+              }, 1000)
+
               this.setWinner(PLAYER_ONE)
-            } else  if (this.counter.countRowTwo === 4) {
+            } else if (this.counter.countRowTwo === 4) {
+              setTimeout(() => {
+                for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                  this.$refs[`bg-animate-${rowIndex}-${i}`][0].classList.add('is-four')
+                }
+              }, 1000)
+
               this.setWinner(PLAYER_TWO)
             }
           }
 
           //check first diagonal
           if (cellIndex + 1 < rowItem.length - 1 && rowIndex < this.game.length - 1) {
-            if (cellItem === this.game[rowIndex + 1][cellIndex + 1]) {
-              cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++
+            for (let i = cellIndex; i < cellIndex + 4; i++) {
+              if (cellItem === this.game[rowIndex + 1][i + 1]) {
+                cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++
 
-              if (this.counter.countDiagonalOne === 4) {
-                this.setWinner(PLAYER_ONE)
-              } else  if (this.counter.countDiagonalTwo === 4) {
-                this.setWinner(PLAYER_TWO)
+                if (this.counter.countDiagonalOne === 4) {
+                  setTimeout(() => {
+                    for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                      this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                    }
+                  }, 1000)
+
+                  this.setWinner(PLAYER_ONE)
+                } else if (this.counter.countDiagonalTwo === 4) {
+                  setTimeout(() => {
+                    for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                      this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                    }
+                  }, 1000)
+
+                  this.setWinner(PLAYER_TWO)
+                }
+              } else {
+                this.counter.countDiagonalOne = 1
+                this.counter.countDiagonalTwo = 1
               }
             }
+
+           /* if (cellItem === this.game[rowIndex + 1][cellIndex + 1]) {
+             /!* cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++*!/
+
+              if (this.counter.countDiagonalOne === 4) {
+                setTimeout(() => {
+                  for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                    this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                  }
+                }, 1000)
+
+                this.setWinner(PLAYER_ONE)
+              } else if (this.counter.countDiagonalTwo === 4) {
+                setTimeout(() => {
+                  for (let i = cellIndex - 2; i < cellIndex + 2; i++) {
+                    this.$refs[`bg-animate-${rowIndex + 1}-${i + 1}`][0].classList.add('is-four')
+                  }
+                }, 1000)
+
+                this.setWinner(PLAYER_TWO)
+              }
+            }*/
           }
 
           //check second diagonal
-           if (cellIndex - 1 >= 0 && rowIndex + 1 < rowItem.length - 1) {
-             if (cellItem === this.game[rowIndex + 1][cellIndex - 1]) {
-               cellItem === PLAYER_ONE ? this.counter.countDiagonalRevertOne++ : this.counter.countDiagonalRevertTwo++
+          if (cellIndex - 1 >= 0 && rowIndex + 1 < rowItem.length - 1) {
+            for (let i = cellIndex; i < cellIndex - 4; i--) {
+              if (cellItem === this.game[rowIndex + 1][i - 1]) {
+                cellItem === PLAYER_ONE ? this.counter.countDiagonalOne++ : this.counter.countDiagonalTwo++
+              } else {
+                this.counter.countDiagonalRevertOne = 1
+                this.counter.countDiagonalRevertTwo = 1
+              }
+            }
 
-               if (this.counter.countDiagonalRevertOne === 4) {
-                 this.setWinner(PLAYER_ONE)
-               } else  if (this.counter.countDiagonalRevertTwo === 4) {
-                 this.setWinner(PLAYER_TWO)
-               }
-             }
-           }
+            if (this.counter.countDiagonalRevertOne === 4) {
+              this.setWinner(PLAYER_ONE)
+            } else if (this.counter.countDiagonalRevertTwo === 4) {
+              this.setWinner(PLAYER_TWO)
+            }
+
+          /*  if (cellItem === this.game[rowIndex + 1][cellIndex - 1]) {
+              cellItem === PLAYER_ONE ? this.counter.countDiagonalRevertOne++ : this.counter.countDiagonalRevertTwo++
+
+              if (this.counter.countDiagonalRevertOne === 4) {
+                this.setWinner(PLAYER_ONE)
+              } else if (this.counter.countDiagonalRevertTwo === 4) {
+                this.setWinner(PLAYER_TWO)
+              }
+            }*/
+          }
         })
       })
 
@@ -145,7 +208,7 @@ export default {
 
               if (this.counter.countColumnOne === 4) {
                 this.setWinner(PLAYER_ONE)
-              } else  if (this.counter.countColumnTwo === 4) {
+              } else if (this.counter.countColumnTwo === 4) {
                 this.setWinner(PLAYER_TWO)
               }
             }
@@ -248,7 +311,9 @@ export default {
                   >
                     <div class="game__field-bg-animate" :ref="`bg-animate-${rowIndex}-${index}`"
                          :class="{'game__field-bg-animate_player-one': PLAYER_ONE === item, 'game__field-bg-animate_player-two': PLAYER_TWO === item, animate: PLAYER_ONE === item || PLAYER_TWO === item}"
-                    ></div>
+                    >
+                      <Icon src="white-circle" width="34" height="34" class="game__field-bg-icon"/>
+                    </div>
                   </button>
                 </template>
               </template>
