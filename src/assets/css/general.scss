@@ -1,11 +1,16 @@
 //normalize
 
+html, head {
+  min-height: 100vh;
+}
 body {
-  margin: 0;
-  padding: 0;
+  position: relative;
+  min-height: 100%;
 }
 
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
@@ -28,6 +33,11 @@ a {
 
 body {
   background: $main;
+}
+
+#app {
+  min-height: 100vh;
+  height: 100%;
 }
 
 .container {

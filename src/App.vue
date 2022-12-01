@@ -1,14 +1,17 @@
 <script>
 import {mapState} from 'pinia'
 import { useMainStore } from './stores/main'
+import {defineAsyncComponent} from "@vue/runtime-core";
 
 export default {
   computed: {
     ...mapState(useMainStore, ['modal']),
     modalComponent() {
-       /*new URL(`@/components/ModalPause`, import.meta.url).default*/
-
-      return import.meta.glob('./components/ModalPause.vue');
+      if(this.modal) {
+        return defineAsyncComponent(() => import(`./components/${this.modal}.vue`))
+      } else {
+        return ''
+      }
     }
   },
 
@@ -18,10 +21,12 @@ export default {
 <template>
   <RouterView />
 
-  <component :is="modalComponent"/>
+  <component :is="modalComponent" class="modal-component"/>
 </template>
 
 <style scoped>
+
+
 header {
   line-height: 1.5;
   max-height: 100vh;
