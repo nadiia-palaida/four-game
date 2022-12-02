@@ -100,21 +100,25 @@ export default {
           }
 
           if (this.counter.countRowOne === 4) {
-            this.setWinner(PLAYER_ONE)
-
-            for (let j = cellIndex; j >= cellIndex - 3 && j >= 0; j--) {
-              setTimeout(() => {
-                this.$refs[`bg-animate-${rowIndex}-${j}`][0].classList.add('is-four')
-              }, 1000)
+            if (!this.winner) {
+              for (let j = cellIndex + 1; j >= cellIndex - 2 && j >= 0; j--) {
+                setTimeout(() => {
+                  this.$refs[`bg-animate-${rowIndex}-${j}`][0].classList.add('is-four')
+                }, 1000)
+              }
             }
+
+            this.setWinner(PLAYER_ONE)
           } else if (this.counter.countRowTwo === 4) {
-            this.setWinner(PLAYER_ONE)
-
-            for (let j = cellIndex; j >= cellIndex - 3 && j >= 0; j--) {
-              setTimeout(() => {
-                this.$refs[`bg-animate-${rowIndex}-${j}`][0].classList.add('is-four')
-              }, 1000)
+            if (!this.winner) {
+              for (let j = cellIndex + 1; j >= cellIndex - 2 && j >= 0; j--) {
+                setTimeout(() => {
+                  this.$refs[`bg-animate-${rowIndex}-${j}`][0].classList.add('is-four')
+                }, 1000)
+              }
             }
+
+            this.setWinner(PLAYER_TWO)
           }
         })
       })
@@ -166,104 +170,101 @@ export default {
     },
 
     checkDiagonalOne() {
+      this.countDiagonalOne = 0
+      this.countDiagonalTwo = 0
+
       this.game.forEach((rowItem, rowIndex) => {
         rowItem.forEach((cellItem, cellIndex) => {
-          let countCell = 0
-          for (let checkCellIndex = rowIndex; checkCellIndex <= rowIndex + 3 && checkCellIndex < this.game.length; checkCellIndex++) {
+          this.counter.countDiagonalOne = 0
+          this.counter.countDiagonalTwo = 0
 
+          for (let countRow = 0, countCell = 0; countRow < 4 && countCell < 4; countRow++, countCell++) {
+            if (rowIndex + countRow < this.game.length && cellIndex + countCell < rowItem.length) {
+              if (cellItem === PLAYER_ONE && cellItem === this.game[rowIndex + countRow][cellIndex + countCell]) {
+                this.counter.countDiagonalOne++
 
-            if (this.game[rowIndex][cellIndex] === PLAYER_ONE && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex + countCell]) {
-              this.counter.countDiagonalOne++
-              if (this.counter.countDiagonalOne === 4) {
-                this.setWinner(PLAYER_ONE)
-
-                for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                  setTimeout(() => {
-                    this.$refs[`bg-animate-${j}-${cellIndex + countCell - 1}`][0].classList.add('is-four')
-                    countCell--
-                  }, 1000)
-                }
-              }
-
-              if (checkCellIndex === this.game.length - 1) {
-                this.counter.countDiagonalOne = 0
-                this.counter.countDiagonalTwo = 0
-              }
-            } else if (this.game[rowIndex][cellIndex] === PLAYER_TWO && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex + countCell]) {
-              this.counter.countDiagonalTwo++
-              if (this.counter.countDiagonalTwo === 4) {
-                this.setWinner(PLAYER_TWO)
-
-                setTimeout(() => {
-                  for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                    this.$refs[`bg-animate-${j}-${cellIndex + countCell - 1}`][0].classList.add('is-four')
-                    countCell--
+                if (this.counter.countDiagonalOne === 4) {
+                  if (!this.winner) {
+                    let newCountCell = countCell
+                    for (let j = countRow; j >= 0; j--) {
+                      setTimeout(() => {
+                        this.$refs[`bg-animate-${rowIndex + j}-${cellIndex + newCountCell}`][0].classList.add('is-four')
+                        newCountCell--
+                      }, 1000)
+                    }
                   }
-                }, 1000)
-              }
 
-              if (checkCellIndex === this.game.length - 1) {
+                  this.setWinner(PLAYER_ONE)
+                }
+              } else if (cellItem === PLAYER_TWO && cellItem === this.game[rowIndex + countRow][cellIndex + countCell]) {
+                this.counter.countDiagonalTwo++
+
+                if (this.counter.countDiagonalTwo === 4) {
+                  if (!this.winner) {
+                    let newCountCell = countCell
+
+                    for (let j = countRow; j >= 0; j--) {
+                      setTimeout(() => {
+                        this.$refs[`bg-animate-${rowIndex + j}-${cellIndex + newCountCell}`][0].classList.add('is-four')
+                        newCountCell--
+                      }, 1000)
+                    }
+                  }
+
+                  this.setWinner(PLAYER_TWO)
+                }
+              } else {
                 this.counter.countDiagonalOne = 0
                 this.counter.countDiagonalTwo = 0
               }
-            } else {
-              this.counter.countDiagonalOne = 0
-              this.counter.countDiagonalTwo = 0
             }
-
-            countCell++
           }
         })
       })
     },
 
     checkDiagonalTwo() {
+      this.countDiagonalRevertOne = 0
+      this.countDiagonalRevertTwo = 0
+
       this.game.forEach((rowItem, rowIndex) => {
         rowItem.forEach((cellItem, cellIndex) => {
-          let countCell = 0
+          this.countDiagonalRevertOne = 0
+          this.countDiagonalRevertTwo = 0
 
-          for (let checkCellIndex = rowIndex; checkCellIndex <= rowIndex + 3 && checkCellIndex < this.game.length; checkCellIndex++) {
+          for (let countRow = 3, countCell = 0; countRow >= 0 && countCell < 4; countRow--, countCell++) {
+            if (rowIndex + countRow < this.game.length && cellIndex + countCell < rowItem.length) {
+              if (cellIndex + 3 < rowItem.length && this.game[rowIndex][cellIndex + 3] === PLAYER_ONE && this.game[rowIndex][cellIndex + 3] === this.game[rowIndex + countRow][cellIndex + countCell]) {
+                this.counter.countDiagonalRevertOne++
+                if (this.counter.countDiagonalRevertOne === 4) {
+                  this.setWinner(PLAYER_ONE)
 
-            if (this.game[rowIndex][cellIndex] === PLAYER_ONE && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex + countCell]) {
-              this.counter.countDiagonalRevertOne++
-              if (this.counter.countDiagonalRevertOne === 4) {
-                this.setWinner(PLAYER_ONE)
-
-                for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                  setTimeout(() => {
-                    this.$refs[`bg-animate-${j}-${cellIndex + 1 + countCell}`][0].classList.add('is-four')
-                    countCell++
-                  }, 1000)
-                }
-              }
-
-              if (checkCellIndex === this.game.length - 1) {
-                this.counter.countDiagonalRevertOne = 0
-                this.counter.countDiagonalRevertTwo = 0
-              }
-            } else if (this.game[rowIndex][cellIndex] === PLAYER_TWO && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex + countCell]) {
-              this.counter.countDiagonalRevertTwo++
-              if (this.counter.countDiagonalRevertTwo === 4) {
-                this.setWinner(PLAYER_TWO)
-
-                setTimeout(() => {
-                  for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                    this.$refs[`bg-animate-${j}-${cellIndex + 1 + countCell}`][0].classList.add('is-four')
-                    countCell++
+                  let newCountCell = countCell
+                  for (let j = countRow; j < 4 && j >= 0; j++) {
+                    setTimeout(() => {
+                      this.$refs[`bg-animate-${rowIndex + j}-${cellIndex + newCountCell}`][0].classList.add('is-four')
+                      newCountCell--
+                    }, 1000)
                   }
-                }, 1000)
-              }
+                }
+              } else if (cellIndex + 3 < rowItem.length && this.game[rowIndex][cellIndex + 3] === PLAYER_TWO && this.game[rowIndex][cellIndex + 3] === this.game[rowIndex + countRow][cellIndex + countCell]) {
+                this.counter.countDiagonalRevertTwo++
+                if (this.counter.countDiagonalRevertTwo === 4) {
+                  this.setWinner(PLAYER_TWO)
 
-              if (checkCellIndex === this.game.length - 1) {
+                  let newCountCell = countCell
+                  for (let j = countRow; j < 4 && j >= 0; j++) {
+                    setTimeout(() => {
+                      this.$refs[`bg-animate-${rowIndex + j}-${cellIndex + newCountCell}`][0].classList.add('is-four')
+                      newCountCell--
+                    }, 1000)
+                  }
+                }
+              } else {
                 this.counter.countDiagonalRevertOne = 0
                 this.counter.countDiagonalRevertTwo = 0
               }
-            } else {
-              this.counter.countDiagonalRevertOne = 0
-              this.counter.countDiagonalRevertTwo = 0
             }
-
-            countCell--
           }
         })
       })
@@ -276,6 +277,11 @@ export default {
     },
 
     playAgain() {
+      let elements = document.querySelectorAll('.is-four')
+      for (let elem of elements) {
+        elem.classList.remove('is-four')
+      }
+
       this.winner = null
       this.createArray()
       this.seconds = 0
@@ -283,13 +289,17 @@ export default {
     },
 
     restart() {
+      let elements = document.querySelectorAll('.is-four')
+      for (let elem of elements) {
+        elem.classList.remove('is-four')
+      }
       clearInterval(this.timeInterval)
       this.openModal('ModalPause')
     },
 
     createArray() {
       for (let i = 0; i < ROWS; i++) {
-        this.game[i] = new Array(COLUMNS);
+        this.game[i] = Array.apply(null, Array(COLUMNS));
       }
     },
     setCountInterval() {
