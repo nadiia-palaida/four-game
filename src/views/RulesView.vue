@@ -54,7 +54,6 @@ export default {
           <button class="rules-info__btn">
 
           </button>
-
         </div>
       </div>
     </div>
