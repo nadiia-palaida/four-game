@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-  <svg>
+  <svg class="icon">
     <use :xlink:href="`${srcDir}#${src}`" />
   </svg>
 </template>

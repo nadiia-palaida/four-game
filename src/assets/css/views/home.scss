@@ -36,3 +36,17 @@
     }
   }
 }
+
+@media screen and (max-width: 576px) {
+  .menu {
+    width: 100%;
+    padding: 25px 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .main-menu {
+    background: $main;
+  }
+}

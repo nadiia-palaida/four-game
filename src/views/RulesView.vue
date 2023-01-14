@@ -1,6 +1,8 @@
 <script>
+import Icon from "../components/Icon.vue";
 export default {
   name: "RulesView",
+  components: {Icon},
   data() {
     return {
       rules: [
@@ -51,9 +53,11 @@ export default {
             </ul>
           </div>
 
-          <button class="rules-info__btn">
-
-          </button>
+          <div class="rules-info__wrap-btn">
+            <router-link :to="{name: 'menu'}" class="rules-info__btn">
+              <Icon width="34" height="24" src="tick"/>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>

@@ -67,7 +67,7 @@ body {
 
 @media screen and (max-width: 992px) {
   .container {
-    max-width: 720px;
+    max-width: 632px;
   }
 }
 
@@ -81,7 +81,7 @@ body {
 
 @media screen and (max-width: 576px) {
   .container {
-    max-width: 90%;
+    width: 360px;
   }
 }
 
@@ -207,5 +207,15 @@ body {
     &:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+.icon {
+  display: block;
+}
+
+@media screen and (max-width: 576px) {
+  .modal {
+    width: 320px;
   }
 }

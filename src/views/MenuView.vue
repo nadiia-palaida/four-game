@@ -20,9 +20,9 @@ export default {
             <Icon src="player-vs-player" width="82" height="46"/>
           </router-link>
 
-          <button class="menu__btn btn">
+          <router-link :to="{name: 'rules'}" class="menu__btn btn">
             <div>GAME RULES</div>
-          </button>
+          </router-link>
         </div>
       </div>
     </div>

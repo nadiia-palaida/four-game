@@ -30,6 +30,33 @@ export default {
         return document.hidden
       });
     },
+    widthCircle() {
+      if(document.documentElement.clientWidth > 768) {
+        return 64
+      } else if (document.documentElement.clientWidth <= 768 && document.documentElement.clientWidth > 576) {
+        return 57
+      } else if (document.documentElement.clientWidth <= 576 && document.documentElement.clientWidth > 0) {
+        return 40
+      }
+    },
+    widthCirclePadding() {
+      if(document.documentElement.clientWidth > 768) {
+        return 24
+      } else if (document.documentElement.clientWidth < 768 && document.documentElement.clientWidth > 576) {
+        return 18
+      } else if (document.documentElement.clientWidth < 576 && document.documentElement.clientWidth > 0) {
+        return 10
+      }
+    },
+    widthFirstCirclePadding() {
+      if(document.documentElement.clientWidth > 768) {
+        return 20
+      } else if (document.documentElement.clientWidth < 768 && document.documentElement.clientWidth > 576) {
+        return 18
+      } else if (document.documentElement.clientWidth < 576 && document.documentElement.clientWidth > 0) {
+        return 10
+      }
+    },
     ...mapState(useMainStore, ['modal']),
   },
   data() {
@@ -63,7 +90,9 @@ export default {
         countDiagonalRevertTwo: 0,
       },
 
-      loading: false
+      loading: false,
+      circleWidth: 0,
+      circleWidthPadding: 0,
     }
   },
   methods: {
@@ -125,44 +154,53 @@ export default {
     },
 
     checkColumns() {
+      this.countColumnOne = 0
+      this.countColumnTwo = 0
+
       this.game.forEach((rowItem, rowIndex) => {
         rowItem.forEach((cellItem, cellIndex) => {
-          for (let checkCellIndex = rowIndex; checkCellIndex <= rowIndex + 3 && checkCellIndex < this.game.length; checkCellIndex++) {
-            if (this.game[checkCellIndex][cellIndex] === PLAYER_ONE && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex]) {
-              this.counter.countColumnOne++
-              if (this.counter.countColumnOne === 4) {
-                this.setWinner(PLAYER_ONE)
+          this.counter.countColumnOne = 0
+          this.counter.countColumnTwo = 0
 
-                for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                  setTimeout(() => {
-                    this.$refs[`bg-animate-${j}-${cellIndex}`][0].classList.add('is-four')
-                  }, 1000)
-                }
-              }
+          for (let countRow = 0, countCell = 0; countRow < 4 && countCell < 4; countRow++) {
+            if (rowIndex + countRow < this.game.length && cellIndex + countCell < rowItem.length) {
+              if (cellItem === PLAYER_ONE && cellItem === this.game[rowIndex + countRow][cellIndex]) {
+                this.counter.countColumnOne++
 
-              if (checkCellIndex === this.game.length - 1) {
-                this.counter.countColumnOne = 0
-                this.counter.countColumnTwo = 0
-              }
-            } else if (this.game[checkCellIndex][cellIndex] === PLAYER_TWO && this.game[rowIndex][cellIndex] === this.game[checkCellIndex][cellIndex]) {
-              this.counter.countColumnTwo++
-              if (this.counter.countColumnTwo === 4) {
-                this.setWinner(PLAYER_TWO)
-
-                setTimeout(() => {
-                  for (let j = checkCellIndex; j >= checkCellIndex - 3 && j >= 0; j--) {
-                    this.$refs[`bg-animate-${j}-${cellIndex}`][0].classList.add('is-four')
+                if (this.counter.countColumnOne === 4) {
+                  if (!this.winner) {
+                    let newCountCell = countCell
+                    for (let j = countRow; j >= 0; j--) {
+                      setTimeout(() => {
+                        this.$refs[`bg-animate-${rowIndex + j}-${cellIndex}`][0].classList.add('is-four')
+                        newCountCell--
+                      }, 1000)
+                    }
                   }
-                }, 1000)
-              }
 
-              if (checkCellIndex === this.game.length - 1) {
+                  this.setWinner(PLAYER_ONE)
+                }
+              } else if (cellItem === PLAYER_TWO && cellItem === this.game[rowIndex + countRow][cellIndex]) {
+                this.counter.countColumnTwo++
+
+                if (this.counter.countColumnTwo === 4) {
+                  if (!this.winner) {
+                    let newCountCell = countCell
+
+                    for (let j = countRow; j >= 0; j--) {
+                      setTimeout(() => {
+                        this.$refs[`bg-animate-${rowIndex + j}-${cellIndex}`][0].classList.add('is-four')
+                        newCountCell--
+                      }, 1000)
+                    }
+                  }
+
+                  this.setWinner(PLAYER_TWO)
+                }
+              } else {
                 this.counter.countColumnOne = 0
                 this.counter.countColumnTwo = 0
               }
-            } else {
-              this.counter.countColumnOne = 0
-              this.counter.countColumnTwo = 0
             }
           }
         })
@@ -385,10 +423,11 @@ export default {
                   <button @click="onClick(rowIndex, index)" @mouseenter="markerPosition = index"
                           class="game__field-bg-circle" :disabled="winner"
                           :class="{animate: PLAYER_ONE === item || PLAYER_TWO === item}"
-                          :style="{top: (88*rowIndex) + 20 + 'px', left: (88*index) + 20 + 'px'}"
+                          :style="{top: ((widthCircle + widthCirclePadding) * rowIndex) + widthFirstCirclePadding + 'px', left: ((widthCircle  + widthCirclePadding) * index) + widthFirstCirclePadding  + 'px'}"
                   >
                     <div class="game__field-bg-animate" :ref="`bg-animate-${rowIndex}-${index}`"
                          :class="{'game__field-bg-animate_player-one': PLAYER_ONE === item, 'game__field-bg-animate_player-two': PLAYER_TWO === item, animate: PLAYER_ONE === item || PLAYER_TWO === item}"
+
                     >
                       <Icon src="white-circle" width="34" height="34" class="game__field-bg-icon"/>
                     </div>
